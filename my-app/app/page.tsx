@@ -5,20 +5,27 @@ import { useState } from "react";
 export default function Home() {
   const [status, setStatus] = useState("Frontend running");
  
+  async function checkBackend() {
+    setStatus("Checking backend...");
+    const res = await fetch('/api/health');
+    const data = await res.json();
+    setStatus(`Backend says: ${data.message}`);
+  }
+ 
   return (
     <div style={{ fontFamily: "system-ui", padding: 24, maxWidth: 800 }}>
-      <h1 style={{ 
-        fontSize: '2rem', 
-        fontWeight: 'bold', 
-        marginBottom: '1rem', 
-        color: '#0070f3' 
-      }}>
+      <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>
         AI Summary App
       </h1>
  
-      <p>{status}</p>
+      <button
+        onClick={checkBackend}
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Check backend
+      </button>
  
-      <p>Next: deploy this to Vercel, then add API routes.</p>
+      <p style={{ marginTop: 12 }}>{status}</p>
     </div>
   );
 }
